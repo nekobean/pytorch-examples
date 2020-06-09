@@ -15,27 +15,6 @@ from PIL import Image
 torch.backends.cudnn.deterministic = True
 
 
-def check_array(a, b):
-    if isinstance(a, torch.Tensor):
-        a = a.cpu().numpy()
-
-    b = np.load(b)
-    assert a.shape == b.shape
-    # assert a.dtype == b.dtype
-
-    if np.issubdtype(a.dtype, np.integer):
-        equals = (np.abs(a.astype(int) - b.astype(int)).max() <= 1).all()
-    else:
-        equals = np.allclose(a, b, rtol=1e-03, atol=1e-03)
-
-    if not equals:
-        print(f"a: {a.shape} {a.dtype}")
-        print(f"b: {b.shape} {b.dtype}")
-        print(f"a: {a.ravel()[:10]}")
-        print(f"b: {b.ravel()[:10]}")
-        assert False
-
-
 class ImageFolder(data.Dataset):
     """Dataset for loading an image from a specified directory.
     """
